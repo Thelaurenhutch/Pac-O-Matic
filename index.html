@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAC-o-Matic</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      color: #222;
+      text-align: center;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    button {
+      margin: 0.5rem;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #59c0cb;
+      color: white;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #47aab4;
+    }
+    .question, .result {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+    }
+    .answers {
+      margin-top: 1rem;
+    }
+    .hidden {
+      display: none;
+    }
+    #pacGraphic {
+      margin-top: 1rem;
+      max-width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>PAC-o-Matic 🧃</h1>
+    <div id="intro">
+      <p>What kind of PAC are you, really? Let’s find out.</p>
+      <button onclick="startGame()">LET'S BUILD</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <div class="question" id="questionText"></div>
+      <div class="answers" id="answerButtons"></div>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>Your PAC is...</h2>
+      <div id="pacResult" style="font-size: 1.5rem; margin-top: 1rem;"></div>
+      <div id="pacDescription" style="margin-top: 1rem; font-style: italic;"></div>
+      <img id="pacGraphic" src="" alt="PAC Graphic">
+      <br>
+      <button onclick="downloadResult()">Download Your Result</button>
+      <button onclick="location.reload()">Build Another</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        text: "You just received an unmarked donation. What do you do?",
+        answers: ["Launder it through my cousin’s art collective", "Disclose it like a law-abiding angel", "Buy matching suits", "Fund a bald eagle liberation campaign"]
+      },
+      {
+        text: "What’s your PAC’s main vibe?",
+        answers: ["Chaos and transparency", "Power and karaoke", "Hyper-specific issues (like anti-pineapple pizza laws)", "Shadowy but technically legal"]
+      },
+      {
+        text: "Your treasurer is:",
+        answers: ["A wizard from the GAO", "An Excel sheet that became sentient", "A frog in a suit", "Unknown (possibly AI)"]
+      },
+      {
+        text: "Pick your slogan:",
+        answers: ["Unlimited contributions, limited accountability", "We put the fun in 112.2(k)", "Like a candidate committee, but worse", "I'm once again asking you to file electronically"]
+      }
+    ];
+
+    const results = [
+      {
+        name: "✨ Technically Legal PAC ✨",
+        description: "Your lawyer hates you. The FEC fears you. You thrive in a gray area of legend.",
+        image: "pac_badge_full_1.png"
+      },
+      {
+        name: "The Emo Super PAC",
+        description: "No coordination? No one understands you anyway. You just run brooding issue ads.",
+        image: "pac_badge_full_5.png"
+      },
+      {
+        name: "FringePAC",
+        description: "You support flat-earth ballot measures and write everything in Comic Sans.",
+        image: "pac_badge_full_4.png"
+      },
+      {
+        name: "The Vibes-Only PAC",
+        description: "You don’t endorse. You don’t oppose. You just... vibe. Maybe legally.",
+        image: "pac_badge_full_6.png"
+      },
+      {
+        name: "The Kid Candidate Committee",
+        description: "Your platform is recess expansion and banning pineapple on pizza. Solid.",
+        image: "pac_badge_full_2.png"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let totalAnswers = [];
+    let finalResult = {};
+
+    function startGame() {
+      document.getElementById("intro").classList.add("hidden");
+      document.getElementById("quiz").classList.remove("hidden");
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("questionText").textContent = q.text;
+      const answerButtons = document.getElementById("answerButtons");
+      answerButtons.innerHTML = "";
+
+      q.answers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => selectAnswer(answer);
+        answerButtons.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(answer) {
+      totalAnswers.push(answer);
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
+      finalResult = results[Math.floor(Math.random() * results.length)];
+      document.getElementById("pacResult").textContent = finalResult.name;
+      document.getElementById("pacDescription").textContent = finalResult.description;
+      document.getElementById("pacGraphic").src = finalResult.image;
+    }
+
+    function downloadResult() {
+      const text = `Your PAC is: ${finalResult.name}\n\n${finalResult.description}`;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'your_pac_result.txt';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
