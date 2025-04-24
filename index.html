@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PAC-o-Matic</title>
   <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body {
       font-family: 'Silkscreen', monospace;
@@ -70,16 +71,13 @@
         padding: 0.75rem 1rem;
         font-size: 0.95rem;
       }
-
       .question {
         font-size: 1.1rem;
       }
-
       .answers button {
         width: 100%;
         margin: 0.5rem 0;
       }
-
       #pacGraphic {
         max-height: 200px;
         object-fit: contain;
@@ -88,4 +86,86 @@
   </style>
 </head>
 <body>
-  <!-- Content remains unchanged from here -->
+  <div class="container">
+    <div id="intro">
+      <img src="pac_o_matic_logo.png" alt="PAC-o-Matic" style="max-width: 100%; height: auto; margin-bottom: 1rem;">
+      <p>What kind of PAC are you, really? Let’s find out.</p>
+      <button onclick="startGame()">LET'S BUILD</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <div class="question" id="questionText"></div>
+      <div class="answers" id="answerButtons"></div>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>Your PAC is...</h2>
+      <div id="pacResult" style="font-size: 1.5rem; margin-top: 1rem;"></div>
+      <div id="pacDescription" style="margin-top: 1rem; font-style: italic;"></div>
+      <img id="pacGraphic" src="" alt="PAC Graphic">
+      <br>
+      <button onclick="downloadResultImage()">Download Your Result</button>
+      <button onclick="location.reload()">Build Another</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [/* questions array here */];
+    const results = [/* results array here */];
+
+    let currentQuestion = 0;
+    let scoreMap = {};
+    let finalResult = {};
+
+    function startGame() {
+      document.getElementById("intro").classList.add("hidden");
+      document.getElementById("quiz").classList.remove("hidden");
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("questionText").textContent = q.text;
+      const answerButtons = document.getElementById("answerButtons");
+      answerButtons.innerHTML = "";
+      q.answers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.textContent = answer.text;
+        btn.onclick = () => selectAnswer(answer);
+        answerButtons.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(answerObj) {
+      for (let pac in answerObj.scores) {
+        scoreMap[pac] = (scoreMap[pac] || 0) + answerObj.scores[pac];
+      }
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
+      const topPAC = Object.entries(scoreMap).sort((a, b) => b[1] - a[1])[0][0];
+      finalResult = results.find(r => r.name === topPAC);
+      document.getElementById("pacResult").textContent = finalResult.name;
+      document.getElementById("pacDescription").textContent = finalResult.description;
+      document.getElementById("pacGraphic").src = finalResult.image || "";
+    }
+
+    function downloadResultImage() {
+      html2canvas(document.getElementById("result")).then(canvas => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "pac_result.png";
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
