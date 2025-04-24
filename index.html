@@ -104,8 +104,10 @@
       <div id="pacDescription" style="margin-top: 1rem; font-style: italic;"></div>
       <img id="pacGraphic" src="" alt="PAC Graphic">
       <br>
-      <button onclick="downloadResultImage()">Download Your Result</button>
-      <button onclick="location.reload()">Build Another</button>
+      <div id="downloadButtons">
+        <button onclick="downloadResultImage()">Download Your Result</button>
+        <button onclick="location.reload()">Build Another</button>
+      </div>
     </div>
   </div>
 
@@ -221,16 +223,16 @@
     }
 
     function downloadResultImage() {
-  const resultNode = document.getElementById("result");
-  const buttonContainer = document.getElementById("downloadButtons");
-  buttonContainer.style.visibility = "hidden";
-  resultNode.style.backgroundColor = '#0e242e';
-  html2canvas(resultNode, { backgroundColor: '#0e242e' }).then(canvas => {
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = "pac_result.png";
-    link.click();
-    buttonContainer.style.visibility = "visible";
+      const resultNode = document.getElementById("result");
+      const buttonContainer = document.getElementById("downloadButtons");
+      buttonContainer.style.visibility = "hidden";
+      resultNode.style.backgroundColor = '#0e242e';
+      html2canvas(resultNode, { backgroundColor: '#0e242e' }).then(canvas => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "pac_result.png";
+        link.click();
+        buttonContainer.style.visibility = "visible";
       });
     }
   </script>
