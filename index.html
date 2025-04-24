@@ -167,7 +167,7 @@
       { name: "GlitterPAC", description: "Why does it always sound like im in the club on the phone? Because that's where elections are won.", image: "unhinged_pac_2.png" },
       { name: "PAC-a-Derm", description: "All memory, no mercy.", image: "unhinged_pac_1.png" },
       { name: "Midnight Filers Club", description: "We file at 11:59pm or not at all.", image: "unhinged_pac_3.png" },
-      { name: "The PACening", description: "It came from the deep... with a treasurer.", image: "unhinged_pac_4.png" },
+      { name: "The PACening", description: "If the world is ending, might as well create more chaos.", image: "unhinged_pac_4.png" },
       { name: "Hot Dog Lobby 5000", description: "One nation, under buns.", image: "unhinged_pac_5.png" },
       { name: "CryptoPAC 404", description: "Form not found. Probably intentional.", image: "unhinged_pac_6.png" },
       { name: "I Was Trying to Run for President PAC", description: "Technically I filed. Emotionally I’m spiraling.", image: "pac_president_placeholder.png" }
@@ -220,12 +220,16 @@
       document.getElementById("pacGraphic").src = finalResult.image || "";
     }
 
-    function downloadResultImage() {
-      html2canvas(document.getElementById("result")).then(canvas => {
+function downloadResultImage() {
+      const resultNode = document.getElementById("result");
+      const buttonContainer = document.getElementById("downloadButtons");
+      buttonContainer.style.display = "none";
+      html2canvas(resultNode, { backgroundColor: '#0e242e' }).then(canvas => {
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = "pac_result.png";
         link.click();
+        buttonContainer.style.display = "block";
       });
     }
   </script>
