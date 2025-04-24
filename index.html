@@ -83,16 +83,22 @@
       <button onclick="startGame()">LET'S BUILD</button>
     </div>
 
-    <div id="quiz" class="hidden" style="position: relative; z-index: 20; display: none;">
+    <div id="quiz" class="hidden">
   <div class="question" id="questionText"></div>
-  <div class="answers" id="answerButtons"></div>
+  
 </div>
       <div class="answers" id="answerButtons"></div>
     </div>
 
-    <div id="result" class="hidden" style="position: relative; z-index: 20; display: none;">
+    <div id="result" class="hidden">
   <h2>Your PAC is...</h2>
   <div id="pacResult" style="font-size: 1.5rem; margin-top: 1rem;"></div>
+  <div id="pacDescription" style="margin-top: 1rem; font-style: italic;"></div>
+  <img id="pacGraphic" src="" alt="PAC Graphic">
+  <br>
+  <button onclick="downloadResult()">Download Your Result</button>
+  <button onclick="location.reload()">Build Another</button>
+</div>
   <div id="pacDescription" style="margin-top: 1rem; font-style: italic;"></div>
   <img id="pacGraphic" src="" alt="PAC Graphic">
   <br>
