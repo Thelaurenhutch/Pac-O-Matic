@@ -86,45 +86,82 @@
       },
       {
         text: "What’s your PAC’s main vibe?",
-        answers: ["Chaos and transparency", "Power and karaoke", "Hyper-specific issues (like anti-pineapple pizza laws)", "Shadowy but technically legal"]
+        answers: ["Chaos and transparency", "A bald eagle driving a Ford truck directly into the sun", "Hyper-specific issues (I just want to have a pet raccoon.)", "Shadowy but technically legal"]
       },
       {
         text: "Your treasurer is:",
-        answers: ["A wizard from the GAO", "An Excel sheet that became sentient", "A frog in a suit", "Unknown (possibly AI)"]
+        answers: ["A wizard from the GAO", "An Excel sheet that became sentient", "A frog in a suit", "Unknown (possibly AI)", "My Aunt Pearl"]
       },
       {
         text: "Pick your slogan:",
-        answers: ["Unlimited contributions, limited accountability", "We put the fun in 112.2(k)", "Like a candidate committee, but worse", "I'm once again asking you to file electronically"]
+        answers: ["Unlimited contributions, limited accountability", "We put the fun in 11 C.F.R. § 103.3 ", "Like a candidate committee, but worse", "I'm once again asking you to file electronically"]
+      },
+      {
+        text: "What is your PAC most likely to sponsor?",
+        answers: ["A glitter cannon", "A hot dog eating contest", "Three children in a trenchcoat", "A candidate with a third-grade reading level"]
+      },
+      {
+        text: "What does your PAC fear most?",
+        answers: ["Oversight", "Sunlight", "CAPTCHA content", "The 'submit' button"]
+      },
+      {
+        text: "How did your PAC form, spiritually speaking?",
+        answers: ["A vision in a Waffle House bathroom", "An Excel macro gone rogue", "Someone dared you", "To get on the ballot. Someway. Somehow"]
       }
     ];
 
     const results = [
       {
-        name: "✨ Technically Legal PAC ✨",
-        description: "Your lawyer hates you. The FEC fears you. You thrive in a gray area of legend.",
+        name: "Technically Legal PAC",
+        description: "We’ve read the CFR. And we’re ignoring the spirit of it.",
         image: "pac_badge_full_1.png"
       },
       {
-        name: "The Emo Super PAC",
-        description: "No coordination? No one understands you anyway. You just run brooding issue ads.",
-        image: "pac_badge_full_5.png"
-      },
-      {
         name: "FringePAC",
-        description: "You support flat-earth ballot measures and write everything in Comic Sans.",
+        description: "Flat earth. Round checks.",
         image: "pac_badge_full_4.png"
       },
       {
-        name: "The Vibes-Only PAC",
-        description: "You don’t endorse. You don’t oppose. You just... vibe. Maybe legally.",
-        image: "pac_badge_full_6.png"
+        name: "Geriatric Leadership PAC",
+        description: "Supporting candidates older than democracy.",
+        image: "pac_badge_full_3.png"
       },
       {
-        name: "The Kid Candidate Committee",
-        description: "Your platform is recess expansion and banning pineapple on pizza. Solid.",
-        image: "pac_badge_full_2.png"
+        name: "GlitterPAC",
+        description: "We sparkle, they tremble.",
+        image: "unhinged_pac_2.png"
+      },
+      {
+        name: "PAC-a-Derm",
+        description: "All memory, no mercy.",
+        image: "unhinged_pac_1.png"
+      },
+      {
+        name: "Midnight Filers Club",
+        description: "We file at 11:59pm or not at all.",
+        image: "unhinged_pac_3.png"
+      },
+      {
+        name: "The PACening",
+        description: "It came from the deep... with a treasurer.",
+        image: "unhinged_pac_4.png"
+      },
+      {
+        name: "Hot Dog Lobby 5000",
+        description: "One nation, under buns.",
+        image: "unhinged_pac_5.png"
+      },
+      {
+        name: "CryptoPAC 404",
+        description: "Form not found. Probably intentional.",
+        image: "unhinged_pac_6.png"
+      },
+      {
+        name: "I Was Trying to Run for President PAC",
+        description: "Technically I filed. Emotionally I’m spiraling.",
+        image: "pac_president_placeholder.png"
       }
-    ];
+    ]; // to be populated later
 
     let currentQuestion = 0;
     let totalAnswers = [];
@@ -163,10 +200,11 @@
     function showResult() {
       document.getElementById("quiz").classList.add("hidden");
       document.getElementById("result").classList.remove("hidden");
-      finalResult = results[Math.floor(Math.random() * results.length)];
+            const hash = totalAnswers.join("-").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      finalResult = results[hash % results.length];
       document.getElementById("pacResult").textContent = finalResult.name;
       document.getElementById("pacDescription").textContent = finalResult.description;
-      document.getElementById("pacGraphic").src = finalResult.image;
+      document.getElementById("pacGraphic").src = finalResult.image || "";
     }
 
     function downloadResult() {
