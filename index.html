@@ -7,21 +7,27 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
-      color: #222;
-      text-align: center;
-      padding: 2rem;
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      background-image: url('A_pixel_art_title_screen_for_a_political_action_co.png');
+      background-size: cover;
+      background-position: center;
+      color: #f0f0f0;
     }
     .container {
       max-width: 600px;
       margin: 0 auto;
-      background: #fff;
+      padding: 3rem 2rem;
+      border-radius: 12px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    #intro {
+      background: rgba(0, 0, 0, 0.7);
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    h1 {
-      font-size: 2rem;
     }
     button {
       margin: 0.5rem;
@@ -30,12 +36,13 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      background-color: #59c0cb;
-      color: white;
+      background-color: #ffcc33;
+      color: #111;
+      font-weight: bold;
       transition: background 0.3s;
     }
     button:hover {
-      background-color: #47aab4;
+      background-color: #ffdd55;
     }
     .question, .result {
       margin-top: 2rem;
@@ -56,8 +63,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>PAC-o-Matic 🧃</h1>
     <div id="intro">
+      <h1>PAC-o-Matic</h1>
       <p>What kind of PAC are you, really? Let’s find out.</p>
       <button onclick="startGame()">LET'S BUILD</button>
     </div>
@@ -161,7 +168,7 @@
         description: "Technically I filed. Emotionally I’m spiraling.",
         image: "pac_president_placeholder.png"
       }
-    ]; // to be populated later
+    ];
 
     let currentQuestion = 0;
     let totalAnswers = [];
@@ -200,7 +207,7 @@
     function showResult() {
       document.getElementById("quiz").classList.add("hidden");
       document.getElementById("result").classList.remove("hidden");
-            const hash = totalAnswers.join("-").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const hash = totalAnswers.join("-").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
       finalResult = results[hash % results.length];
       document.getElementById("pacResult").textContent = finalResult.name;
       document.getElementById("pacDescription").textContent = finalResult.description;
