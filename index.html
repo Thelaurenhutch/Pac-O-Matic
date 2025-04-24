@@ -13,19 +13,23 @@
       background-image: url('A_pixel_art_title_screen_for_a_political_action_co.png');
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .container {
-      max-width: 600px;
+      width: 90%;
+      max-width: 500px;
       margin: 0 auto;
-      padding: 3rem 2rem;
+      padding: 2rem 1rem;
       border-radius: 12px;
       text-align: center;
-      position: relative;
-      z-index: 1;
+      background: rgba(0, 0, 0, 0.75);
     }
     #intro {
-      background: rgba(0, 0, 0, 0.7);
       padding: 2rem;
       border-radius: 12px;
     }
@@ -59,12 +63,32 @@
       max-width: 100%;
       border-radius: 10px;
     }
+    @media (max-width: 480px) {
+      button {
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+      }
+
+      .question {
+        font-size: 1.1rem;
+      }
+
+      .answers button {
+        width: 100%;
+        margin: 0.5rem 0;
+      }
+
+      #pacGraphic {
+        max-height: 200px;
+        object-fit: contain;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="intro">
-      <h1>PAC-o-Matic</h1>
+      <img src="pac_o_matic_logo.png" alt="PAC-o-Matic" style="max-width: 100%; height: auto; margin-bottom: 1rem;">
       <p>What kind of PAC are you, really? Let’s find out.</p>
       <button onclick="startGame()">LET'S BUILD</button>
     </div>
@@ -89,89 +113,67 @@
     const questions = [
       {
         text: "You just received an unmarked donation. What do you do?",
-        answers: ["Launder it through my cousin’s art collective", "Disclose it like a law-abiding angel", "Buy matching suits", "Fund a bald eagle liberation campaign"]
+        answers: [
+          { text: "Launder it through my cousin’s art collective", scores: { "Technically Legal PAC": 2, "The PACening": 1 } },
+          { text: "Disclose it like a law-abiding angel", scores: { "Midnight Filers Club": 2 } },
+          { text: "Buy matching suits", scores: { "FringePAC": 2 } },
+          { text: "Fund a bald eagle liberation campaign", scores: { "PAC-a-Derm": 2 } }
+        ]
       },
       {
         text: "What’s your PAC’s main vibe?",
-        answers: ["Chaos and transparency", "A bald eagle driving a Ford truck directly into the sun", "Hyper-specific issues (I just want to have a pet raccoon.)", "Shadowy but technically legal"]
+        answers: [
+          { text: "Chaos and transparency", scores: { "GlitterPAC": 2, "FringePAC": 1 } },
+          { text: "A bald eagle driving a Ford truck directly into the sun", scores: { "PAC-a-Derm": 2 } },
+          { text: "Hyper-specific issues (I just want to have a pet raccoon.)", scores: { "Hot Dog Lobby 5000": 2 } },
+          { text: "Shadowy but technically legal", scores: { "Technically Legal PAC": 2 } }
+        ]
       },
       {
         text: "Your treasurer is:",
-        answers: ["A wizard from the GAO", "An Excel sheet that became sentient", "A frog in a suit", "Unknown (possibly AI)", "My Aunt Pearl"]
+        answers: [
+          { text: "A wizard from the GAO", scores: { "Geriatric Leadership PAC": 2 } },
+          { text: "An Excel sheet that became sentient", scores: { "CryptoPAC 404": 2 } },
+          { text: "A frog in a suit", scores: { "The PACening": 2 } },
+          { text: "Unknown (possibly AI)", scores: { "CryptoPAC 404": 2 } },
+          { text: "My Aunt Pearl", scores: { "I Was Trying to Run for President PAC": 2 } }
+        ]
       },
       {
         text: "Pick your slogan:",
-        answers: ["Unlimited contributions, limited accountability", "We put the fun in 11 C.F.R. § 103.3 ", "Like a candidate committee, but worse", "I'm once again asking you to file electronically"]
+        answers: [
+          { text: "Unlimited contributions, limited accountability", scores: { "Technically Legal PAC": 2 } },
+          { text: "We put the fun in 11 C.F.R. § 103.3 ", scores: { "GlitterPAC": 2 } },
+          { text: "Like a candidate committee, but worse", scores: { "I Was Trying to Run for President PAC": 2 } },
+          { text: "I'm once again asking you to file electronically", scores: { "Midnight Filers Club": 2 } }
+        ]
       },
       {
         text: "What is your PAC most likely to sponsor?",
-        answers: ["A glitter cannon", "A hot dog eating contest", "Three children in a trenchcoat", "A candidate with a third-grade reading level"]
-      },
-      {
-        text: "What does your PAC fear most?",
-        answers: ["Oversight", "Sunlight", "CAPTCHA content", "The 'submit' button"]
-      },
-      {
-        text: "How did your PAC form, spiritually speaking?",
-        answers: ["A vision in a Waffle House bathroom", "An Excel macro gone rogue", "Someone dared you", "To get on the ballot. Someway. Somehow"]
+        answers: [
+          { text: "A glitter cannon", scores: { "GlitterPAC": 2 } },
+          { text: "A hot dog eating contest", scores: { "Hot Dog Lobby 5000": 2 } },
+          { text: "Three children in a trenchcoat", scores: { "The PACening": 2 } },
+          { text: "A candidate with a third-grade reading level", scores: { "Geriatric Leadership PAC": 2 } }
+        ]
       }
     ];
 
     const results = [
-      {
-        name: "Technically Legal PAC",
-        description: "We’ve read the CFR. And we’re ignoring the spirit of it.",
-        image: "pac_badge_full_1.png"
-      },
-      {
-        name: "FringePAC",
-        description: "Flat earth. Round checks.",
-        image: "pac_badge_full_4.png"
-      },
-      {
-        name: "Geriatric Leadership PAC",
-        description: "Supporting candidates older than democracy.",
-        image: "pac_badge_full_3.png"
-      },
-      {
-        name: "GlitterPAC",
-        description: "We sparkle, they tremble.",
-        image: "unhinged_pac_2.png"
-      },
-      {
-        name: "PAC-a-Derm",
-        description: "All memory, no mercy.",
-        image: "unhinged_pac_1.png"
-      },
-      {
-        name: "Midnight Filers Club",
-        description: "We file at 11:59pm or not at all.",
-        image: "unhinged_pac_3.png"
-      },
-      {
-        name: "The PACening",
-        description: "It came from the deep... with a treasurer.",
-        image: "unhinged_pac_4.png"
-      },
-      {
-        name: "Hot Dog Lobby 5000",
-        description: "One nation, under buns.",
-        image: "unhinged_pac_5.png"
-      },
-      {
-        name: "CryptoPAC 404",
-        description: "Form not found. Probably intentional.",
-        image: "unhinged_pac_6.png"
-      },
-      {
-        name: "I Was Trying to Run for President PAC",
-        description: "Technically I filed. Emotionally I’m spiraling.",
-        image: "pac_president_placeholder.png"
-      }
+      { name: "Technically Legal PAC", description: "We’ve read the CFR. And we’re ignoring the spirit of it.", image: "pac_badge_full_1.png" },
+      { name: "FringePAC", description: "Flat earth. Round checks.", image: "pac_badge_full_4.png" },
+      { name: "Geriatric Leadership PAC", description: "Supporting candidates older than democracy.", image: "pac_badge_full_3.png" },
+      { name: "GlitterPAC", description: "We sparkle, they tremble.", image: "unhinged_pac_2.png" },
+      { name: "PAC-a-Derm", description: "All memory, no mercy.", image: "unhinged_pac_1.png" },
+      { name: "Midnight Filers Club", description: "We file at 11:59pm or not at all.", image: "unhinged_pac_3.png" },
+      { name: "The PACening", description: "It came from the deep... with a treasurer.", image: "unhinged_pac_4.png" },
+      { name: "Hot Dog Lobby 5000", description: "One nation, under buns.", image: "unhinged_pac_5.png" },
+      { name: "CryptoPAC 404", description: "Form not found. Probably intentional.", image: "unhinged_pac_6.png" },
+      { name: "I Was Trying to Run for President PAC", description: "Technically I filed. Emotionally I’m spiraling.", image: "pac_president_placeholder.png" }
     ];
 
     let currentQuestion = 0;
-    let totalAnswers = [];
+    let scoreMap = {};
     let finalResult = {};
 
     function startGame() {
@@ -188,14 +190,16 @@
 
       q.answers.forEach(answer => {
         const btn = document.createElement("button");
-        btn.textContent = answer;
+        btn.textContent = answer.text;
         btn.onclick = () => selectAnswer(answer);
         answerButtons.appendChild(btn);
       });
     }
 
-    function selectAnswer(answer) {
-      totalAnswers.push(answer);
+    function selectAnswer(answerObj) {
+      for (let pac in answerObj.scores) {
+        scoreMap[pac] = (scoreMap[pac] || 0) + answerObj.scores[pac];
+      }
       currentQuestion++;
       if (currentQuestion < questions.length) {
         showQuestion();
@@ -207,8 +211,9 @@
     function showResult() {
       document.getElementById("quiz").classList.add("hidden");
       document.getElementById("result").classList.remove("hidden");
-      const hash = totalAnswers.join("-").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      finalResult = results[hash % results.length];
+      const topPAC = Object.entries(scoreMap).sort((a, b) => b[1] - a[1])[0][0];
+      finalResult = results.find(r => r.name === topPAC);
+
       document.getElementById("pacResult").textContent = finalResult.name;
       document.getElementById("pacDescription").textContent = finalResult.description;
       document.getElementById("pacGraphic").src = finalResult.image || "";
