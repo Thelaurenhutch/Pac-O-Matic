@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PAC-o-Matic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Press Start 2P', monospace;
       margin: 0;
       padding: 0;
       background-color: #111;
@@ -36,7 +37,7 @@
     button {
       margin: 0.5rem;
       padding: 1rem 1.5rem;
-      font-size: 1rem;
+      font-size: 0.75rem;
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -44,13 +45,14 @@
       color: #111;
       font-weight: bold;
       transition: background 0.3s;
+      font-family: 'Press Start 2P', monospace;
     }
     button:hover {
       background-color: #ffdd55;
     }
     .question, .result {
       margin-top: 2rem;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
     }
     .answers {
       margin-top: 1rem;
@@ -66,11 +68,11 @@
     @media (max-width: 480px) {
       button {
         padding: 0.75rem 1rem;
-        font-size: 0.95rem;
+        font-size: 0.65rem;
       }
 
       .question {
-        font-size: 1.1rem;
+        font-size: 0.8rem;
       }
 
       .answers button {
@@ -104,11 +106,12 @@
       <div id="pacDescription" style="margin-top: 1rem; font-style: italic;"></div>
       <img id="pacGraphic" src="" alt="PAC Graphic">
       <br>
-      <button onclick="downloadResult()">Download Your Result</button>
+      <button onclick="downloadResultImage()">Download Your Result</button>
       <button onclick="location.reload()">Build Another</button>
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
     const questions = [
       {
@@ -219,15 +222,13 @@
       document.getElementById("pacGraphic").src = finalResult.image || "";
     }
 
-    function downloadResult() {
-      const text = `Your PAC is: ${finalResult.name}\n\n${finalResult.description}`;
-      const blob = new Blob([text], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'your_pac_result.txt';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    function downloadResultImage() {
+      html2canvas(document.getElementById("result")).then(canvas => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "pac_result.png";
+        link.click();
+      });
     }
   </script>
 </body>
